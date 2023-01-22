@@ -22,17 +22,19 @@
 
         }
         
-         static int RemoveBooks(BookShopContext dbContext)
+        public static void IncreasePrices(BookShopContext dbContext)
         {
             Book[] books = dbContext
                 .Books
-                .Where(b => b.Copies < 4200)
+                .Where(b => b.ReleaseDate.Value.Year < 2010)
                 .ToArray();
 
-            dbContext.Books.RemoveRange(books);
-            dbContext.SaveChanges();
+            foreach (Book book in books)
+            {
+                book.Price += 5;
+            }
 
-            return books.Length;
+            dbContext.SaveChanges();
         }
     }
 }
